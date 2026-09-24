@@ -137,8 +137,9 @@ Items 4 and 5 are unchanged from the current text (previously 2 and 3).
 
 - **Go SDK** (v1.6.0+): `Host` validation on loopback by default
   (`DisableLocalhostProtection`), `Origin` opt-in (`mcp/streamable.go`).
-- **TypeScript and Python SDKs:** matching changes proposed in LINK-TS-ISSUE
-  and LINK-PY-ISSUE; prototype branches TBD.
+- **TypeScript and Python SDKs:** prototype branches that make `Origin`
+  validation opt-in while keeping `Host` validation on by default will be
+  linked here.
 - **Conformance:** the existing `dns-rebinding-protection` scenario already
   matches item 1. A new scenario could check that a request with a valid
   `Host`, a valid bearer token and `Origin: chrome-extension://x` is not
