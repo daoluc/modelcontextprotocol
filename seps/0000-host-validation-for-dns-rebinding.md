@@ -12,8 +12,7 @@
 The Streamable HTTP transport requires servers to validate the `Origin` header
 "to prevent DNS rebinding attacks". The header that identifies a rebinding
 attack is `Host`, not `Origin`. This SEP changes that requirement to validate
-`Host`, and adds a **SHOULD** to validate `Origin` for servers that accept
-ambient credentials such as cookies.
+`Host` instead.
 
 ## Motivation
 
@@ -44,24 +43,24 @@ v1.6.0.
 ## Specification
 
 In "Security & Endpoint" of `basic/transports/streamable-http`, replace item 1
-and add a new item 2:
+with:
 
 1. Servers **MUST** validate the `Host` header on all incoming connections to
    prevent DNS rebinding attacks.
    - If the `Host` header is invalid, servers **MUST** respond with HTTP 403
      Forbidden. The HTTP response body **MAY** comprise a JSON-RPC _error
      response_ that has no `id`.
-2. Servers that accept ambient credentials, such as cookies, **SHOULD** also
-   validate the `Origin` header.
 
-The remaining items are unchanged and renumbered 3 and 4.
+The remaining items are unchanged.
 
 ## Rationale
 
 `Host` is present on every HTTP/1.1 request, and in a rebinding attack it
-always names the attacker's domain. `Origin` validation remains the standard
-defense against cross-site request forgery, which only matters when the browser
-attaches credentials on the attacker's behalf. Item 2 keeps it for that case.
+always names the attacker's domain. `Origin` validation is a defense against
+cross-site request forgery, which is a general HTTP concern rather than one
+specific to MCP, as the Go SDK's `docs/rough_edges.md` notes about its
+`CrossOriginProtection` option. The spec therefore does not replace the
+`Origin` requirement with another.
 
 **Alternative considered:** keeping the `Origin` requirement and adding scheme
 wildcards (`chrome-extension://*`) to SDK allowlists. That helps Chrome but not
@@ -80,8 +79,10 @@ Firefox, and still ties rebinding protection to a header that is absent on SSE
 
 - DNS rebinding protection is unchanged or stronger: `Host` is also checked on
   the SSE `GET`, where `Origin` is absent.
-- Servers that accept cookies or other ambient credentials keep CSRF protection
-  through item 2.
+- Removing the `Origin` requirement removes an incidental CSRF defense for
+  servers that accept ambient credentials such as cookies. Such servers should
+  apply standard CSRF defenses, for example `Origin` checks or `SameSite`
+  cookies, as they would for any HTTP API.
 - An unauthenticated local server without an `Origin` check remains protected
   from cross-site POSTs because the transport requires
   `Content-Type: application/json`, which forces a CORS preflight. The official
