@@ -4,7 +4,8 @@
 - **Type**: Standards Track
 - **Created**: 2026-09-23
 - **Author(s)**: Luc Dao <daonguyenluc@gmail.com> (@daoluc)
-- **Sponsor**: None (seeking sponsor)
+- **Sponsor**: Paul Carleton (@pcarleton), on behalf of the Transports Working
+  Group
 - **PR**: https://github.com/modelcontextprotocol/modelcontextprotocol/pull/{NUMBER}
 
 ## Abstract
@@ -83,10 +84,12 @@ Firefox, and still ties rebinding protection to a header that is absent on SSE
   servers that accept ambient credentials such as cookies. Such servers should
   apply standard CSRF defenses, for example `Origin` checks or `SameSite`
   cookies, as they would for any HTTP API.
-- An unauthenticated local server without an `Origin` check remains protected
-  from cross-site POSTs because the transport requires
-  `Content-Type: application/json`, which forces a CORS preflight. The official
-  SDKs reject other content types.
+- An unauthenticated local server without an `Origin` check is protected from
+  cross-site requests only while it sends no permissive CORS headers and
+  rejects non-JSON POST bodies. A JSON body forces a CORS preflight, which a
+  server without CORS headers fails, and a non-JSON body is rejected before it
+  reaches a tool. The official SDKs do both by default on the MCP endpoint, but
+  the specification requires neither. See Open Question 2.
 
 ## Reference Implementation
 
@@ -102,6 +105,21 @@ Firefox, and still ties rebinding protection to a header that is absent on SSE
 
 1. The Python SDK rejects an invalid `Host` with 421 Misdirected Request rather
    than 403. Should item 1 allow any 4xx, as the conformance scenario does?
+2. **CORS on unauthenticated local servers.** Today the `Origin` check also
+   neutralizes permissive CORS. The TypeScript SDK's examples add
+   `cors({ origin: '*' })` to the MCP endpoint and stay safe only because
+   `createMcpExpressApp()` rejects non-localhost origins on loopback binds.
+   Without the `Origin` requirement, an unauthenticated local server that sends
+   `Access-Control-Allow-Origin: *` can be driven by any website, and `Host`
+   validation does not help because the request genuinely targets `localhost`.
+   The specification does not currently require closed CORS or rejection of
+   non-JSON POST bodies. Should this SEP add, for servers that do not
+   authenticate every request, one or more of:
+   - servers **MUST NOT** send `Access-Control-Allow-Origin: *` or reflect
+     arbitrary origins;
+   - servers **MUST** reject POST bodies whose media type is not
+     `application/json`;
+   - servers that send CORS headers **MUST** also validate `Origin`?
 
 ## Acknowledgments
 
