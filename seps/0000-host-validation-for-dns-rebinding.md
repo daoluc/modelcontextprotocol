@@ -4,8 +4,7 @@
 - **Type**: Standards Track
 - **Created**: 2026-09-23
 - **Author(s)**: Luc Dao <daonguyenluc@gmail.com> (@daoluc)
-- **Sponsor**: Paul Carleton (@pcarleton), on behalf of the Transports Working
-  Group
+- **Sponsor**: Paul Carleton (@pcarleton), on behalf of the SDK Working Group
 - **PR**: https://github.com/modelcontextprotocol/modelcontextprotocol/pull/{NUMBER}
 
 ## Abstract
