@@ -137,5 +137,5 @@ stays tied to a header that is absent on SSE `GET`s.
 
 ## Acknowledgments
 
-@kurtisvg, @pcarleton, @felixweinberger and @yarolegovich for the discussion
-that led to this SEP.
+@kurtisvg, @pcarleton, @felixweinberger, @yarolegovich and @JLLeitschuh for
+the discussion that led to this SEP.
