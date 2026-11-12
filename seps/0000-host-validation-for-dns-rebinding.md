@@ -3,8 +3,8 @@
 - **Status**: Draft
 - **Type**: Standards Track
 - **Created**: 2026-09-23
-- **Author(s)**: Luc Dao <daonguyenluc@gmail.com> (@daoluc)
-- **Sponsor**: Paul Carleton (@pcarleton), on behalf of the SDK Working Group
+- **Author(s)**: Luc Dao (@daoluc)
+- **Sponsor**: Paul Carleton
 - **PR**: https://github.com/modelcontextprotocol/modelcontextprotocol/pull/{NUMBER}
 
 ## Abstract
