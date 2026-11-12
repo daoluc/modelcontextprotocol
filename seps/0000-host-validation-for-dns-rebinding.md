@@ -120,6 +120,15 @@ Firefox, and still ties rebinding protection to a header that is absent on SSE
      `application/json`;
    - servers that send CORS headers **MUST** also validate `Origin`?
 
+3. **Scope beyond Streamable HTTP.** This change relies on browsers enforcing
+   CORS preflight on cross-origin HTTP requests. Browsers do not apply CORS to
+   WebSocket, so a cross-site page can open a WebSocket to `localhost` without
+   any DNS rebinding, and a `Host` check passes it because the request
+   genuinely targets `localhost`. Custom transports that browsers can reach
+   this way still need `Origin` validation. Should this SEP state that its
+   change applies only to Streamable HTTP, and should the transports overview
+   add security guidance for custom transports?
+
 ## Acknowledgments
 
 @kurtisvg and @pcarleton for the transports-WG discussion that led to #3370.
