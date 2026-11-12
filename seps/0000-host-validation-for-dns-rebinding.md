@@ -4,7 +4,7 @@
 - **Type**: Standards Track
 - **Created**: 2026-09-23
 - **Author(s)**: Luc Dao (@daoluc)
-- **Sponsor**: Paul Carleton
+- **Sponsor**: Paul Carleton (@pcarleton)
 - **PR**: https://github.com/modelcontextprotocol/modelcontextprotocol/pull/{NUMBER}
 
 ## Abstract
