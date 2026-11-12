@@ -63,9 +63,11 @@ specific to MCP, as the Go SDK's `docs/rough_edges.md` notes about its
 `Origin` requirement with another.
 
 **Alternative considered:** keeping the `Origin` requirement and adding scheme
-wildcards (`chrome-extension://*`) to SDK allowlists. That helps Chrome but not
-Firefox, and still ties rebinding protection to a header that is absent on SSE
-`GET`s.
+wildcards (`chrome-extension://*`, `moz-extension://*`) to SDK allowlists. The
+TypeScript SDK already supports these. They admit extension clients on both
+browsers, but every SDK must implement them and every operator must opt in,
+web-app clients on `https://` origins remain blocked, and rebinding protection
+stays tied to a header that is absent on SSE `GET`s.
 
 ## Backward Compatibility
 
