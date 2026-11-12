@@ -113,14 +113,18 @@ stays tied to a header that is absent on SSE `GET`s.
    Without the `Origin` requirement, an unauthenticated local server that sends
    `Access-Control-Allow-Origin: *` can be driven by any website, and `Host`
    validation does not help because the request genuinely targets `localhost`.
-   The specification does not currently require closed CORS or rejection of
-   non-JSON POST bodies. Should this SEP add, for servers that do not
-   authenticate every request, one or more of:
-   - servers **MUST NOT** send `Access-Control-Allow-Origin: *` or reflect
-     arbitrary origins;
+   Permissive CORS on its own is not the problem: it is safe on servers that
+   authenticate every request and on local servers that keep an `Origin`
+   check, which covers the current SDK examples. The risk is the combination
+   of permissive CORS, no authentication and no `Origin` check, which the
+   specification does not currently rule out. Should this SEP add one or more
+   of:
+   - servers that send permissive CORS headers and do not authenticate every
+     request **MUST** validate `Origin`;
    - servers **MUST** reject POST bodies whose media type is not
      `application/json`;
-   - servers that send CORS headers **MUST** also validate `Origin`?
+   - servers **MUST NOT** reflect an arbitrary `Origin` together with
+     `Access-Control-Allow-Credentials: true`?
 
 3. **Scope beyond Streamable HTTP.** This change relies on browsers enforcing
    CORS preflight on cross-origin HTTP requests. Browsers do not apply CORS to
